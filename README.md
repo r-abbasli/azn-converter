@@ -1,49 +1,38 @@
-# AZN Converter
-#### Video Demo:  <https://www.youtube.com/watch?v=iVBfazqebNI>
-#### Description:
+# 💱 AZN Converter
 
-The Application, AZN Converter, written in Python, calculates exchange values of the currencies using the latest rates given by the Central Bank of Azerbaijan.
+A Python command-line tool that calculates currency exchange values using real-time rates from the Central Bank of Azerbaijan (CBAR).
 
-#### project.py
-##### Data
-Firstly, a get request is made to retrieve the html code of https://cbar.az/currency/rates page, which has the link to the latest xml file containing the data. The reason is, the link itself is not something like current.xml, but rather in dd.mm.yyyy format, and only is updated if it is a working day in Azerbaijan. So, instead of using something like `datetime`, the program rely on the CBAR to update the page that contains the link, and it uses a regular expression to extract it and with another request, it then retrieves the necessary data. The program will quit on both `request`s, if any `Exception` raises.
+## 🚀 Features
+- Automatically retrieves the **latest daily exchange rates**.
+- Converts **to/from Azerbaijani Manat (AZN)**.
+- Handles **precious metals** measured in **troy ounces**.
+- Gracefully exits on unsupported currencies or input errors.
+- Includes **unit tests** for key functions.
 
+## 👤 Who Is It For?
+- **General users** needing quick exchange rate conversions.
+- **Python learners** exploring web scraping, XML parsing, and CLI apps.
+- **Recruiters** reviewing a backend-focused, testable, data-handling project.
 
-xml file is parsed with xml.etree.ElementTree, and stored in a list of dictionaries named `rates` with following keys: unit, code and value. Conversions have been made for unit to be 1 on currencies where it was 100.
+## 🛠️ Tech Stack
+- Python 3
+- `requests`, `re`, `xml.etree.ElementTree`, `inflect`, `pytest`
 
-##### ask_which_way
-It is a function that asks for input in a while loop and returns if the input is one of "to", "from" or "exit"
+## 📂 Project Structure
+- `project.py`: Main CLI application
+- `test_project.py`: Contains unit tests for core functions
 
-If the return value is "to" or "from", the conversations to or from AZN will be made, respectively. If the return value is "exit", the program will quit.
+## 🔍 How It Works
+1. Scrapes CBAR’s currency rates page to find the current XML link.
+2. Parses XML data into a list of currency exchange rates.
+3. Converts user input amounts **to/from AZN** based on selected currency.
+4. Detects and formats precious metals (e.g., "troy ounces of gold").
+5. Validates and handles user inputs in clean loops.
 
+## 🧪 Tests
+- `test_ask_which_way`: Tests input direction logic.
+- `test_ounce_prepend`: Tests special formatting for precious metals.
+- `test_convert`: Mocks inputs and currency values to test conversion logic.
 
-###### convert
-The convert function starts with asking the user for an input for the amount in a while loop. It returns if the input is a value that can be converted to a float or the program quits if the input is "exit".
-
-Next is, input for the currency code, again in a while loop. If the input matches the value of the `code` of any currencies in the list, it assigns that currency's value to a new currency_value variable.
-
-oz variable is generated with ounce_prepend function which will be covered in the next section.
-
-The function then returns the resulting text to be printed on the terminal, formatted accordingly.
-
-CBAR doesn't provide exchange rate for every possible currency. The function prints the list of supported currencies, if the input does not match any of the values of the `code` key in the `rates` list and it is not "exit". 
-
-The program quits if the input is "exit".
-
-###### ounce_prepend
-Precious metals' code and only their code start with the letter X and they are measured in troy ounces. Using these, the the ounce_prepend function returns "troy ounce of " or "troy ounces of " using `inflect` library either before the inputted amount or the result of calculation depending on `mode`.
-
-
-##### exit_app
-This function quits the program. It exists, so, it can be managed from one place, if any change is required on exit calls across the program.
-
-
-#### test_project.py
-##### test_ask_which_way
-This test tests ask_which_way function. MonkeyPatch is necessary because, the function has input in it.
-
-##### test_ounces_prepend
-This test tests ounce_prepend function.
-
-##### test_convert
-convert function relies on two inputs, one argument and one global variable. Because of this, test_convert has to implement mock values.
+## 📺 Demo
+[Watch on YouTube](https://www.youtube.com/watch?v=iVBfazqebNI)
